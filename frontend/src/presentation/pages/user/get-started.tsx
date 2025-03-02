@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import '../../../styles/user/GetStartedPage.css';
+import '../../../styles/user/get-started.css';
 import GetStartedPageModal from "./GetStartPageModal"
 
 function GetStartedPage() {
