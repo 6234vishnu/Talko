@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../../styles/user/signUp.css";
+
 import api from "../../../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 
@@ -67,105 +67,113 @@ const SignupModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   return (
-    <div className="signUpPage-modal-overlay">
-      <div className="signUpPage-modal">
-        <button className="signUpPage-close-btn" onClick={onClose}>
-          &times;
+   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div className="bg-white w-[90%] max-w-md p-6 rounded-xl shadow-lg text-center relative">
+    <button
+      onClick={onClose}
+      className="absolute top-3 right-4 text-2xl text-gray-600 hover:text-black"
+    >
+      &times;
+    </button>
+
+    <h2 className="text-xl font-bold mb-4">Sign Up</h2>
+
+    {/* Step 1: Phone Input */}
+    {step === "phone" && (
+      <>
+        <p className="text-base text-gray-700 mb-2">Enter your phone number</p>
+        <input
+          type="text"
+          placeholder="Enter mobile number"
+          value={phone}
+          onChange={handlePhoneChange}
+          maxLength={10}
+          className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm mb-3"
+        />
+        {error && (
+          <p className="text-red-500 text-sm mb-2">{error}</p>
+        )}
+        <button
+          className="w-full bg-black  text-white py-2 rounded text-base mt-2 disabled:bg-gray-300 disabled:cursor-not-allowed"
+          disabled={phone.length !== 10}
+          onClick={handleNext}
+        >
+          Next
         </button>
+      </>
+    )}
 
-        <h2 className="signUpPage-title">Sign Up</h2>
+    {/* Step 2: Username & About */}
+    {step === "details" && (
+      <>
+        <p className="text-base text-gray-700 mb-2">Enter your details</p>
+        <input
+          type="text"
+          placeholder="Enter your name"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm mb-3"
+        />
+        <input
+          type="text"
+          placeholder="Enter about (optional)"
+          value={about}
+          onChange={(e) => setAbout(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm mb-3"
+        />
+        <div className="flex justify-between gap-3 mt-4">
+          <button
+            className="w-1/2 bg-white text-black py-2 rounded text-base border border-black"
+            onClick={() => setStep("phone")}
+          >
+            Back
+          </button>
+          <button
+            className="w-1/2 bg-black text-white py-2 rounded text-base"
+            onClick={handleNext}
+          >
+            Next
+          </button>
+        </div>
+      </>
+    )}
 
-        {/* Step 1: Phone Input */}
-        {step === "phone" && (
-          <>
-            <p className="signUpPage-text">Enter your phone number</p>
-            <input
-              type="text"
-              placeholder="Enter mobile number"
-              value={phone}
-              onChange={handlePhoneChange}
-              maxLength={10}
-              className="signUpPage-input"
-            />
-            {error && (
-              <p style={{ color: "red" }} className="signUpPage-error-text">
-                {error}
-              </p>
-            )}
-            <button
-              className="signUpPage-button"
-              disabled={phone.length !== 10}
-              onClick={handleNext}
-            >
-              Next
-            </button>
-          </>
+    {/* Step 3: Profile Picture */}
+    {step === "picture" && (
+      <>
+        <p className="text-base text-gray-700 mb-2">Upload Profile Picture</p>
+        {preview && (
+          <img
+            src={preview}
+            alt="Preview"
+            className="w-24 h-24 object-cover rounded-full mx-auto mb-3"
+          />
         )}
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="text-sm mb-3"
+        />
+        <div className="flex justify-between gap-3 mt-4">
+          <button
+            className="w-1/2 bg-white text-black py-2 rounded text-base border border-black "
+            onClick={() => setStep("details")}
+          >
+            Back
+          </button>
+          <button
+            className="w-1/2 bg-black text-white py-2 rounded text-base"
+            onClick={handleSignup}
+          >
+            Sign Up
+          </button>
+        </div>
+      </>
+    )}
+  </div>
+</div>
 
-        {/* Step 2: Username & About */}
-        {step === "details" && (
-          <>
-            <p className="signUpPage-text">Enter your details</p>
-            <input
-              type="text"
-              placeholder="Enter your name"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="signUpPage-input"
-            />
-            <input
-              type="text"
-              placeholder="Enter about (optional)"
-              value={about}
-              onChange={(e) => setAbout(e.target.value)}
-              className="signUpPage-input"
-            />
-            <div className="signUpPage-buttons">
-              <button
-                className="signUpPage-button"
-                onClick={() => setStep("phone")}
-              >
-                Back
-              </button>
-              <button className="signUpPage-button" onClick={handleNext}>
-                Next
-              </button>
-            </div>
-          </>
-        )}
-
-        {/* Step 3: Profile Picture */}
-        {step === "picture" && (
-          <>
-            <p className="signUpPage-text">Upload Profile Picture</p>
-            {preview && (
-              <img
-                src={preview}
-                alt="Preview"
-                className="signUpPage-profile-preview"
-              />
-            )}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="signUpPage-file-input"
-            />
-            <div className="signUpPage-buttons">
-              <button
-                className="signUpPage-button"
-                onClick={() => setStep("details")}
-              >
-                Back
-              </button>
-              <button className="signUpPage-button" onClick={handleSignup}>
-                Sign Up
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-    </div>
   );
 };
 

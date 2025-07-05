@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../../styles/admin/adminLogin.css';
+import '../../../assets/styles/admin/adminLogin.css';
 
 // Define types for form data
 interface FormData {

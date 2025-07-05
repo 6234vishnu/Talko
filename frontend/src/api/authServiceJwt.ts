@@ -7,6 +7,7 @@ try {
         localStorage.setItem("accessToken", response.data.accessToken);
     }
 } catch (error) {
+    console.log(error,'error in auth service JWT');
     
 }
 }
